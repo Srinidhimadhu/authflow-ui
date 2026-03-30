@@ -19,19 +19,19 @@ A visually stunning, modern **Authentication System UI** built with **HTML5**, *
 ## 📸 Screenshots
 
 ### 1. Login Page
-![Login Page](screenshots/01-login.png)
+![Login Page](01-login.png)
 
 ### 2. Register Page
-![Register Page](screenshots/02-register.png)
+![Register Page](02-register.png)
 
 ### 3. Forgot Password Page
-![Forgot Password Page](screenshots/03-forgot-password.png)
+![Forgot Password Page](03-forgot-password.png)
 
 ### 4. Reset Password Page
-![Reset Password Page](screenshots/04-reset-password.png)
+![Reset Password Page](04-reset-password.png)
 
 ### 5. Dashboard Page
-![Dashboard Page](screenshots/05-dashboard.png)
+![Dashboard Page](05-dashboard.png)
 
 ---
 
