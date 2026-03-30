@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register — AuthFlow</title>
+  <meta name="description" content="Create your AuthFlow account and get started for free." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <div class="auth-bg"></div>
+
+  <main class="auth-wrapper" role="main">
+    <div class="glass-card" style="max-width:500px;">
+
+      <!-- Brand -->
+      <div class="brand-logo">
+        <div class="brand-icon">✦</div>
+        <span class="brand-name">AuthFlow</span>
+      </div>
+
+      <h1 class="auth-title">Create account</h1>
+      <p class="auth-subtitle">Join thousands of users building with AuthFlow</p>
+
+      <form id="registerForm" novalidate>
+
+        <!-- Full Name -->
+        <div class="form-floating-custom">
+          <input type="text" id="fullName" class="form-control-custom" placeholder="Full name" autocomplete="name" required />
+          <label for="fullName">Full name</label>
+        </div>
+
+        <!-- Email -->
+        <div class="form-floating-custom">
+          <input type="email" id="regEmail" class="form-control-custom" placeholder="Email address" autocomplete="email" required />
+          <label for="regEmail">Email address</label>
+        </div>
+
+        <!-- Password -->
+        <div class="form-floating-custom">
+          <div class="input-icon-wrap">
+            <input type="password" id="regPassword" class="form-control-custom" placeholder="Password" autocomplete="new-password" required />
+            <label for="regPassword">Password</label>
+            <button type="button" class="toggle-pw" id="togglePw1" aria-label="Toggle password">
+              <span id="eye1">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </span>
+            </button>
+          </div>
+          <!-- Strength Indicator -->
+          <div class="strength-bar-wrap" id="strengthWrap" style="display:none;">
+            <div class="strength-label">
+              <span>Strength</span>
+              <span id="strengthText" style="color:var(--text-muted);">—</span>
+            </div>
+            <div class="strength-bar">
+              <div class="strength-fill" id="strengthFill"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="form-floating-custom">
+          <div class="input-icon-wrap">
+            <input type="password" id="confirmPassword" class="form-control-custom" placeholder="Confirm password" autocomplete="new-password" required />
+            <label for="confirmPassword">Confirm password</label>
+            <button type="button" class="toggle-pw" id="togglePw2" aria-label="Toggle confirm password">
+              <span id="eye2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </span>
+            </button>
+          </div>
+          <div class="hint-text" id="matchHint" style="display:none;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span id="matchHintText"></span>
+          </div>
+        </div>
+
+        <!-- Terms -->
+        <label class="form-check-custom">
+          <input type="checkbox" id="terms" required />
+          <span>I agree to the <a href="#" class="auth-link">Terms</a> and <a href="#" class="auth-link">Privacy Policy</a></span>
+        </label>
+
+        <button type="submit" class="btn-primary-glow" id="registerBtn">
+          <span class="btn-label">Create Account</span>
+          <span class="dots"><span></span><span></span><span></span></span>
+        </button>
+
+      </form>
+
+      <p class="auth-footer-text">
+        Already have an account?
+        <a href="index.html" class="auth-link">Sign in</a>
+      </p>
+
+    </div>
+  </main>
+
+  <script>
+    // ── SVG icons ───────────────────────────────────────────
+    const eyeSVG    = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+    const eyeOffSVG = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+
+    function makeToggle(btnId, inputId, iconId) {
+      let seen = false;
+      document.getElementById(btnId).addEventListener('click', () => {
+        seen = !seen;
+        document.getElementById(inputId).type = seen ? 'text' : 'password';
+        document.getElementById(iconId).innerHTML = seen ? eyeOffSVG : eyeSVG;
+      });
+    }
+    makeToggle('togglePw1', 'regPassword', 'eye1');
+    makeToggle('togglePw2', 'confirmPassword', 'eye2');
+
+    // ── Strength Checker ────────────────────────────────────
+    const strengthLevels = [
+      { label: '—',        color: 'var(--text-muted)',  cls: 'strength-0' },
+      { label: 'Weak',     color: 'var(--danger)',      cls: 'strength-1' },
+      { label: 'Fair',     color: 'var(--warning)',     cls: 'strength-2' },
+      { label: 'Good',     color: '#84cc16',            cls: 'strength-3' },
+      { label: 'Strong',   color: 'var(--success)',     cls: 'strength-4' },
+    ];
+
+    function calcStrength(pw) {
+      let score = 0;
+      if (pw.length >= 8) score++;
+      if (/[A-Z]/.test(pw)) score++;
+      if (/[0-9]/.test(pw)) score++;
+      if (/[^A-Za-z0-9]/.test(pw)) score++;
+      return score;
+    }
+
+    document.getElementById('regPassword').addEventListener('input', function () {
+      const pw = this.value;
+      const wrap = document.getElementById('strengthWrap');
+      const fill = document.getElementById('strengthFill');
+      const text = document.getElementById('strengthText');
+
+      if (!pw) { wrap.style.display = 'none'; return; }
+      wrap.style.display = 'block';
+      const score = pw.length === 0 ? 0 : Math.min(4, calcStrength(pw));
+      const level = strengthLevels[score];
+      fill.className = `strength-fill ${level.cls}`;
+      text.textContent = level.label;
+      text.style.color = level.color;
+    });
+
+    // ── Match check ─────────────────────────────────────────
+    document.getElementById('confirmPassword').addEventListener('input', function () {
+      const pw1 = document.getElementById('regPassword').value;
+      const hint = document.getElementById('matchHint');
+      const hintText = document.getElementById('matchHintText');
+      if (!this.value) { hint.style.display = 'none'; return; }
+      hint.style.display = 'flex';
+      if (this.value === pw1) {
+        hint.className = 'hint-text hint-valid';
+        hintText.textContent = 'Passwords match';
+      } else {
+        hint.className = 'hint-text hint-invalid';
+        hintText.textContent = 'Passwords do not match';
+      }
+    });
+
+    // ── Ripple & Submit ─────────────────────────────────────
+    document.querySelectorAll('.btn-primary-glow').forEach(btn => {
+      btn.addEventListener('click', function (e) {
+        const r = document.createElement('span');
+        r.className = 'ripple';
+        const rect = this.getBoundingClientRect(), s = Math.max(rect.width, rect.height);
+        r.style.cssText = `width:${s}px;height:${s}px;left:${e.clientX - rect.left - s/2}px;top:${e.clientY - rect.top - s/2}px;`;
+        this.appendChild(r);
+        setTimeout(() => r.remove(), 600);
+      });
+    });
+
+    document.getElementById('registerForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const pw1 = document.getElementById('regPassword').value;
+      const pw2 = document.getElementById('confirmPassword').value;
+      if (pw1 !== pw2) {
+        document.getElementById('confirmPassword').style.borderColor = 'var(--danger)';
+        return;
+      }
+      const btn = document.getElementById('registerBtn');
+      btn.classList.add('loading');
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.classList.remove('loading');
+        btn.disabled = false;
+        window.location.href = 'index.html';
+      }, 2000);
+    });
+  </script>
+
+</body>
+</html>

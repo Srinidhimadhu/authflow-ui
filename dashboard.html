@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — AuthFlow</title>
+  <meta name="description" content="Your AuthFlow dashboard — manage your account and activity." />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Dashboard-specific grid helpers */
+    .dash-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+    .dash-grid-2 {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 1.2rem;
+    }
+    @media (max-width: 900px) {
+      .dash-grid-3 { grid-template-columns: 1fr 1fr; }
+      .dash-grid-2 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 540px) {
+      .dash-grid-3 { grid-template-columns: 1fr; }
+    }
+
+    /* Quick action btn */
+    .quick-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.7rem 1rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      color: var(--text-secondary);
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      width: 100%;
+      text-align: left;
+    }
+    .quick-btn:hover {
+      background: rgba(108,99,255,0.1);
+      border-color: rgba(108,99,255,0.3);
+      color: var(--text-primary);
+      transform: translateX(4px);
+    }
+    .quick-btn .q-icon {
+      width: 32px; height: 32px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    /* Profile mini-card */
+    .profile-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.85rem 1.1rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      margin-bottom: 1rem;
+    }
+    .profile-pill .av {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg,var(--accent-primary),var(--accent-teal));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700; font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .profile-pill .info { min-width: 0; }
+    .profile-pill .pname {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .profile-pill .pemail {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Status badge */
+    .badge-active {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.22rem 0.65rem;
+      background: rgba(16,185,129,0.15);
+      border: 1px solid rgba(16,185,129,0.3);
+      border-radius: 20px;
+      font-size: 0.7rem;
+      color: #34d399;
+      font-weight: 500;
+    }
+    .badge-active::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 6px #10b981;
+      animation: livePulse 2s infinite;
+    }
+    @keyframes livePulse {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0.4; }
+    }
+
+    .section-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-bg"></div>
+
+  <!-- Navbar -->
+  <nav class="dash-nav" role="navigation" aria-label="Main navigation">
+    <a href="dashboard.html" class="dash-logo" aria-label="AuthFlow Home">
+      <div class="dash-logo-icon">✦</div>
+      <span class="dash-logo-text">AuthFlow</span>
+    </a>
+
+    <div class="dash-nav-right">
+      <span class="badge-active">Active</span>
+      <div class="avatar-circle" title="Alex Johnson" role="img" aria-label="User avatar">AJ</div>
+      <a href="index.html" class="btn-logout" title="Sign out">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Logout
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main class="dash-content" role="main">
+
+    <!-- Welcome Banner -->
+    <div class="welcome-card">
+      <div>
+        <div class="welcome-title">Welcome back, Alex 👋</div>
+        <div class="welcome-sub">Here's what's happening with your account today.</div>
+      </div>
+      <div style="margin-top:1rem;display:flex;align-items:center;gap:0.5rem;">
+        <span style="font-size:0.8rem;color:var(--text-muted);">Last login: Today at 9:42 AM</span>
+        <span style="width:4px;height:4px;border-radius:50%;background:var(--text-muted);display:inline-block;"></span>
+        <span style="font-size:0.8rem;color:var(--accent-teal);">Chrome · Windows</span>
+      </div>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="dash-grid-3">
+      <div class="stat-card" style="animation-delay:0.05s;">
+        <div class="stat-icon stat-icon-purple">🔐</div>
+        <div class="stat-value text-gradient">48</div>
+        <div class="stat-label">Active Sessions</div>
+      </div>
+      <div class="stat-card" style="animation-delay:0.1s;">
+        <div class="stat-icon stat-icon-teal">🌐</div>
+        <div class="stat-value text-gradient">3</div>
+        <div class="stat-label">Devices Linked</div>
+      </div>
+      <div class="stat-card" style="animation-delay:0.15s;">
+        <div class="stat-icon stat-icon-amber">🛡️</div>
+        <div class="stat-value text-gradient">A+</div>
+        <div class="stat-label">Security Score</div>
+      </div>
+    </div>
+
+    <!-- Bottom Grid -->
+    <div class="dash-grid-2">
+
+      <!-- Activity -->
+      <div class="activity-card">
+        <div class="activity-title">
+          <span>📋</span> Recent Activity
+        </div>
+        <div class="activity-item">
+          <div class="activity-dot dot-purple"></div>
+          <div class="activity-text">Successful login from Chrome on Windows</div>
+          <div class="activity-time">2m ago</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-dot dot-teal"></div>
+          <div class="activity-text">Password changed successfully</div>
+          <div class="activity-time">1h ago</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-dot dot-amber"></div>
+          <div class="activity-text">New device linked — iPhone 15 Pro</div>
+          <div class="activity-time">Yesterday</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-dot dot-purple"></div>
+          <div class="activity-text">Two-factor authentication enabled</div>
+          <div class="activity-time">3 days ago</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-dot dot-teal"></div>
+          <div class="activity-text">Email verified successfully</div>
+          <div class="activity-time">1 week ago</div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div>
+        <!-- Profile -->
+        <div class="activity-card" style="margin-bottom:1.2rem;">
+          <div class="activity-title"><span>👤</span> Profile</div>
+          <div class="profile-pill">
+            <div class="av">AJ</div>
+            <div class="info">
+              <div class="pname">Alex Johnson</div>
+              <div class="pemail">alex@authflow.io</div>
+            </div>
+          </div>
+          <button class="quick-btn" onclick="alert('Profile settings coming soon!')">
+            <div class="q-icon" style="background:rgba(108,99,255,0.2);">⚙️</div>
+            Manage Profile
+          </button>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="activity-card">
+          <div class="activity-title"><span>⚡</span> Quick Actions</div>
+          <div style="display:flex;flex-direction:column;gap:0.5rem;">
+            <button class="quick-btn" onclick="alert('Security settings coming soon!')">
+              <div class="q-icon" style="background:rgba(45,212,191,0.2);">🔒</div>
+              Security Settings
+            </button>
+            <button class="quick-btn" onclick="alert('2FA setup coming soon!')">
+              <div class="q-icon" style="background:rgba(245,158,11,0.2);">📱</div>
+              Set Up 2FA
+            </button>
+            <button class="quick-btn" onclick="window.location.href='forgot-password.html'">
+              <div class="q-icon" style="background:rgba(239,68,68,0.15);">🔑</div>
+              Change Password
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    // Staggered card entry
+    document.querySelectorAll('.stat-card, .activity-card, .welcome-card').forEach((el, i) => {
+      el.style.animationDelay = `${i * 0.07}s`;
+    });
+  </script>
+
+</body>
+</html>
