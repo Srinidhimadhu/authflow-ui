@@ -83,35 +83,6 @@ A visually stunning, modern **Authentication System UI** built with **HTML5**, *
 
 ---
 
-## 🎨 Custom CSS Highlights (`styles.css`)
-
-```css
-/* Glassmorphism card */
-.glass-card {
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(24px);
-  border: 1px solid rgba(108, 99, 255, 0.12);
-  box-shadow: 0 24px 64px rgba(108, 99, 255, 0.12);
-  border-radius: 22px;
-}
-
-/* Gradient button with ripple */
-.btn-primary-glow {
-  background: linear-gradient(135deg, #6c63ff, #8b5cf6, #0d9488);
-  background-size: 200% 200%;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 6px 24px rgba(108, 99, 255, 0.22);
-}
-
-/* Floating label animation */
-.form-floating-custom input:focus ~ label {
-  top: 0;
-  font-size: 0.72rem;
-  color: #6c63ff;
-}
-```
-
----
 
 ## 🛠️ Tech Stack
 
